@@ -1,0 +1,17 @@
+global-styling:
+  css:
+    theme:
+      css/style.css: {}
+      css/custom.css: {}
+      css/owl.carousel.min.css: {}
+      css/owl.theme.default.css: {}
+      css/animate.css: {}
+      css/stellarnav.css: {}
+  js-footer:
+  js:
+    js/owl.carousel.min.js: {}
+    js/wow.min.js: {}
+    js/stellarnav.min.js: {}
+    https://cdn.jsdelivr.net/jwplayer/7.1.4/jwplayer.js: { external: true }
+    js/natg_custom.js: {}
+    

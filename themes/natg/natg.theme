@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+
+
+/**
+ * Implements hook_preprocess_HOOK() for menu.html.twig.
+ */
+function natg_preprocess_menu(&$variables)
+{
+    //  if ($variables['menu_name'] == 'main') {
+    //    if (!isset($variables['attributes']['class'])) {
+    //      $variables['attributes']['class'] = [];
+    //    }
+    //    $variables['attributes']['class'] = array_merge($variables['attributes']['class'], ['my-main-menu']);  }
+}
+
+function natg_preprocess(&$variables, $hook)
+{
+    $variables['base_path'] = base_path();
+}
+
+function natg_theme_suggestions_page_alter(array &$suggestions, array $variables, $hook) {
+    $node = Drupal::request()->attributes->get('node');
+    if ($node && $node->getType() == 'product') {
+    $suggestions[] = 'page__product';
+
+  }
+
+  // page--product.html.twig
+}
+
+
+
+
+function natg_preprocess_page(&$variables)
+{
+
+
+    $variables['header_top_right'] = array(
+        '#markup' => '<div class="dropdown">
+			<button class="dropdown-toggle" data-toggle="dropdown" type="button">Group Website <span class="caret"></span></button>
+			<ul class="dropdown-menu">
+			    <li><a href="#">NIIT Technologies Home</a></li>
+			    <li><a href="#">NIIT Cloud Technologies</a></li>
+			    <li><a href="#">NIIT Media Technologies</a></li>
+			    <li><a href="#">NIIT Ltd</a></li>
+			</ul>
+			</div> <span class="flag"><a href="#"><img alt="German" src="/themes/natg/images/flag1.jpg"></a><a href="#"><img alt="Spanish" src="/themes/natg/images/flag2.jpg"></a></span>'
+    );
+
+
+    $privacy_alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/24');
+    $term_alias    = \Drupal::service('path.alias_manager')->getAliasByPath('/node/25');
+    $safe_alias    = \Drupal::service('path.alias_manager')->getAliasByPath('/node/26');
+
+    $variables['footer_bottom_left'] = array(
+        '#markup' => '<div class="privacy"><a href="' . $privacy_alias . '">Privacy Statement</a>|<a href="' . $term_alias . '">Terms Of Use</a>|<a href="' . $safe_alias . '">Safe Harbor</a></div>'
+    );
+
+
+    $variables['footer_bottom_middle'] = array(
+        '#markup' => '<div class="copy">© NIIT Technologies, 2017</div>'
+    );
+
+
+    $variables['footer_bottom_right'] = array(
+        '#markup' => '<div class="socilaLink">
+						<a class="fb" href="https://twitter.com/NIITTech" target="_blank" rel="nofollow">
+						<i aria-hidden="true" class="fa fa-facebook"></i></a>
+						<a class="twitter" href="https://twitter.com/NIITTech" target="_blank" rel="nofollow">
+						<i aria-hidden="true" class="fa fa-twitter"></i></a>
+						<a class="linkedin" href="http://www.linkedin.com/company/niit-technologies-limited?trk=hb_tab_compy_id_271908" target="_blank" rel="nofollow">
+						<i aria-hidden="true" class="fa fa-linkedin"></i></a>
+						<a class="google" href="https://plus.google.com/+NiittechNOIDA/posts" target="_blank" rel="nofollow">
+						<i aria-hidden="true" class="fa fa-google-plus"></i></a>
+						<a class="youtube" href="https://www.youtube.com/user/niittechnologiesltd" target="_blank" rel="nofollow">
+						<i aria-hidden="true" class="fa fa-youtube"></i></a>
+						<a class="rss" href="/rss.xml" target="_blank">
+						<i aria-hidden="true" class="fa fa-rss"></i></a></div>'
+    );
+
+
+   /***************/
+    if (isset($variables['node']) && is_numeric($variables['node']->id())) {
+
+    $nid = $variables['node']->id();
+    $menu_tree = \Drupal::menuTree();
+    $menu_name = 'main';
+    $parameters = $menu_tree->getCurrentRouteMenuTreeParameters($menu_name);
+    $tree = $menu_tree->load($menu_name, $parameters);
+    $manipulators = array(
+      array('callable' => 'menu.default_tree_manipulators:checkAccess'),
+      array('callable' => 'menu.default_tree_manipulators:generateIndexAndSort'),
+      array('callable' => 'toolbar_menu_navigation_links'),
+    );
+    $tree = $menu_tree->transform($tree,$manipulators);
+    $subtrees = array();
+    foreach ($tree as $element) {
+      $link = $element->link;
+      if ($element->subtree) {
+	 // print_r($element->link); die();
+        $routeId = $element->link->getRouteParameters()['node'];
+	
+        if ($routeId == $nid) {
+          $variables['menu_children'] = $menu_tree->build($element->subtree);
+        }else{
+	    echo 'dd';
+	}
+      }
+    }
+  }
+}

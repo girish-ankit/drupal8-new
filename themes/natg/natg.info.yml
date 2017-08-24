@@ -1,0 +1,24 @@
+core: 8.x
+type: theme
+base theme: bootstrap
+
+name: 'NATG'
+description: 'This custom theme is develope for NIIT Airline Technologies GmbH '
+package: 'Bootstrap'
+
+regions:
+  header_top: 'Header Top'
+  navigation_collapsible: 'Navigation (Collapsible)'
+  header: 'Top Bar'
+  banner: 'Banner'
+  innner_banner: 'Inner Page Banner'
+  side_bar: 'Side Bar'
+  help: 'Help'
+  content: 'Content'
+  news_event: 'Front Page News & Event'
+  footer: 'Footer'
+  
+  
+
+libraries:
+  - 'natg/global-styling'
